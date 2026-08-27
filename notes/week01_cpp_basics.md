@@ -39,3 +39,85 @@ I encountered an error related to std::cout. I need to understand what std:: mea
 ## What confused me today?
 
 Why do we need the use of std:: before cout
+
+
+
+
+# Day 02 - Variables, Types, and Input/Output
+
+## Self Notes
+
+1. [[maybe_unused]] is used when the variable might not be used further down: 
+
+    [[maybe_unused]] double pi { 3.14159 };  // Don't complain if pi is unused
+    [[maybe_unused]] double gravity { 9.8 }; // Don't complain if gravity is unused
+    [[maybe_unused]] double phi { 1.61803 }; // Don't complain if phi is unused
+2. Using int x{} , int x() is preferred. mostly using int x{} as if intitalized int x{4.5} , complier will throw an error. Maybe it would be an issue with vectors later on?
+
+
+## What is a variable?
+
+The variable is the named object/storage that contains the value.
+
+## What is a data type?
+
+data type is a fixed types of data c++ can handle.
+
+## What is the difference between int, float and double?
+
+int is integer, float has fractional and double is double precision of float
+
+## What does bool represent?
+
+bool means boolean values like true or false
+
+## What does char represent?
+
+char is a single unit of charectar in c++
+
+## What is std::string?
+
+string is sequence of many charectars
+
+## What does std::cout do?
+
+it prints out in the console
+
+## What does std::cin do?
+
+it takes user inputs
+
+## What is initialization?
+
+Giving a variable its initial value when the variable is created.
+
+## What is assignment?
+
+assignement is the way a variable can be assigned a value
+
+## Why can an uninitialized variable be dangerous?
+
+it can print out garbage value
+
+## What does << mean when used with std::cout?
+
+insertion operator
+
+## What does >> mean when used with std::cin?
+
+extraction operator
+
+## Why does FP32 require more memory than INT8?
+
+as fp32 is 4 times the int memory.
+![1787865581448](image/week01_cpp_basics/1787865581448.png)
+![1787865601518](image/week01_cpp_basics/1787865601518.png)
+
+## What confused me today?
+
+not much, just why fp32 requires more memory than int and how does it look in binary.
+
+
+
+
+
