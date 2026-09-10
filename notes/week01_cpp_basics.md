@@ -121,3 +121,70 @@ not much, just why fp32 requires more memory than int and how does it look in bi
 
 
 
+# Day 03 - Functions and Clean Code
+
+## What is a function?
+
+function is a way to use the code again and again
+
+## Why are functions useful?
+
+modulartity, readbility and resuablitiy
+
+## What is a parameter?
+
+parameter is a variable decalerd in function definition int func(int parameter,int parameter)
+
+## What is an argument?
+
+argument is the real value for the function func(0,9)
+
+## What is the difference between parameter and argument?
+
+one is initalization and one is setting of value
+
+## What is a return value?
+
+return value is the value used for returning and setting the variable to the memory
+
+## What does void mean for a function?
+
+reutrn nothing
+
+## What is local scope?
+
+which is initatied in local functions, other functions cannot use it until it is declared for use and referenced properly
+
+## What is pass by value?
+
+using value directly
+
+## What is pass by reference?
+
+using address/ pointers to access memory slots 
+
+## What happens if a function modifies a value passed by value?
+
+nothing changes as it is a copy
+
+## What can happen if a function modifies a non-const reference?
+
+value is changed as og is changed as pointed to address
+
+## What does const mean?
+
+constant variable which should not be modified 
+
+## Why might copying a huge Tensor be more expensive than copying an integer?
+
+tensor are huge and intger are smaller
+
+## What confused me today?
+
+const declaration inside a function parameter. also the parameter initialization.
+
+
+
+
+
+# Day 04 - 
