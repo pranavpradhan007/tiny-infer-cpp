@@ -229,4 +229,34 @@ I think today was first time i used stackoverflow and internet to help me with t
 
 
 
-# Day 05 - 
+# Day 05 - Structs and Data Modeling
+
+## What is a struct?
+
+structs are containers in c++.
+
+## What is a data member?
+
+anything in the structs are called data member
+
+## Why did we group rows and cols into TensorShape instead of keeping them separate?
+
+i can now use many times without worrying about the rows and cols differently. 
+
+## How do you access members of a struct?
+
+using . operator
+
+## What is the difference between a struct type and an object created from that struct?
+
+struct is a strcuture or a blueprint while object is the one tat uses the blueprint. think of it like a house and its blueprint. there can be many houses of the same blueprint.
+
+## What confused me today?
+
+relatively simple. what confused me was that int to string conversion. to_string is used for int type conversion. at first i misread the problem and was inputting the elements as well for the tensor but then i abandoned it after reading the problem thoroughly.
+
+
+
+
+
+# Day 06 - 

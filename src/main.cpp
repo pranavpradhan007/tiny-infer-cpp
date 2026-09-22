@@ -1,70 +1,75 @@
 #include <iostream>
-#include <vector>
+#include <string>
 
 using namespace std;
 
-vector<double> create_vector(int n)
+struct TensorShape
 {
-    vector<double> array{};
-    double temp;
-    for(int iii=0; iii<n; iii++) // i was wrong here the condition was iii<=n but ii<n is the correct or it goes more than n
-    {
-        cout<<"Enter "<<iii<<" element: ";
-        cin>>temp;
-        array.push_back(temp);
-    }
-    return array;
+    long long rows{};
+    long long cols{};   
+};
+
+long long num_elements(const TensorShape& shape)
+{
+    return {shape.rows * shape.cols};
 }
 
-double sum_vector(const vector<double>& array)
+string print_shape(const TensorShape& shape)
+/*could have done something simpler:
+string print_shape(const TensorShape& shape)
 {
-    if(array.empty())
-    {
-        cout<<"Vector is empty.";
-        return 0;
-    } 
-    double sum{0};
-    for(int iii=0; iii<array.size(); iii++)
-    {
-        sum+=array[iii];
-    }
-    return sum;
+    return "Tensor Shape is " +
+           to_string(shape.rows) +
+           " X " +
+           to_string(shape.cols);
+}
+*/
+{
+    string message;
+    string row_str;
+    string col_str;
+    row_str=to_string(shape.rows);
+    col_str=to_string(shape.cols);
+    message="Tensor Shape is " + row_str + " X " + col_str;
+    return message;
 }
 
-double max_abs(const vector<double>& array) //i first used vector<diuble> array instead of const vector<double>& array which was wrong. basically passing the whole array would result in lag and now using address instead of value as constant can make up what we were losing at first.
+bool is_valid_shape(const TensorShape& shape) 
+/* could have done something like this:
+bool is_valid_shape(const TensorShape& shape)
 {
-    if(array.empty())
-    {
-        cout<<"Vector is empty.";
-        return 0;
-    }
-    double temp_abs;
-    temp_abs=abs(array[0]);
-    
-    for(int i=1; i<array.size(); i++)
-    {
-        if(abs(array[i])>temp_abs)
-        {
-            temp_abs=abs(array[i]);
-        }
-    }
+    return shape.rows > 0 && shape.cols > 0;
+}
 
-    return temp_abs;
+*/
+{
+    if(shape.rows>0 && shape.cols>0){
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int main()
 {
-    vector<double> array{};
-    int n;
-    cout<<"Enter the amount of values in the vector: ";
-    if(n<=0)
+    TensorShape shape{};
+    cout<<"Enter number of rows: ";
+    cin>>shape.rows;
+    cout<<"Enter number of cols: ";
+    cin>>shape.cols;
+    if(is_valid_shape(shape)==false)
     {
-        cout<<"wrong input. bye bye.";
+        cout<<"Error, tensor cannot have 0 rows, 0 columns. bye bye";
         return 1;
     }
-    cin>>n;
-    array=create_vector(n);
-    cout<<"Sum of the elements of the vector is: "<<sum_vector(array)<<endl;
-    cout<<"Maximum absolute of the elements of the vector is: "<<max_abs(array);
+    cout<<"The tensor is valid."<<endl;
+
+    long long n{num_elements(shape)};
+    cout<<"The number of elements in the tensor are: "<<n<<'\n';
+    string shape_str{print_shape(shape)};
+    cout<<shape_str;
+
     return 0;
 }
