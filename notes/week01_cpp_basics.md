@@ -187,4 +187,46 @@ const declaration inside a function parameter. also the parameter initialization
 
 
 
-# Day 04 - 
+# Day 04 - Loops and Vectors
+
+## What is a loop?
+
+loop is a way to automate the repeatble cin and cout stuff
+
+## What is the difference between a for loop and a while loop?
+
+while loop is used when bounds are not really clear but for is used when bounds are clear
+
+## What is std::vector?
+
+vector is a container. it is basically an array.
+
+## What do .size() and push_back() do?
+
+size() is a method for vector which calculates the size that is the length of the array. push_back() is the method in array which helps in using push function in stack to push on top of the stack. to pop is pop_back(). we can even use emplace_back() method which is similar to push_back() method
+
+## Why does vector indexing start at 0, and what happens if you access an invalid index?
+
+vector index starts at 0 as you can imagine that we are calcualting the distance from first elkement. you can get error when accessing invalid index
+
+## Why do we pass a vector using const & instead of by value?
+
+using const vector<type>& name helps in accessing by address and not by value. this helps in function not calling the whole vector value whenever it wants to. using address points to address of the vector
+
+## What is the time complexity of sum_vector() and max_abs()?
+
+O(n) spcae for sum is O(n) but for max is O(1)
+
+## Why will max_abs() matter later for INT8 quantization?
+
+as we are going to divide it up by the size of int8 which is max_abs/127
+
+## What confused me today?
+
+I think today was first time i used stackoverflow and internet to help me with the problem. the main thing was calculation of max value but i got it. other was const & when using vector.
+
+
+
+
+
+# Day 05 - 
