@@ -259,4 +259,34 @@ relatively simple. what confused me was that int to string conversion. to_string
 
 
 
-# Day 06 - 
+# Day 06 - File I/O
+
+## What is file I/O?
+
+we can input output files using buffer stream
+
+## What is the difference between ifstream and ofstream?
+
+ifstream is reading the file and ofstream writing to a file
+
+## Why should we check whether a file opened successfully?
+
+if the file does not exist then we should get an error
+
+## How does while (inf >> value) work when reading a file?
+
+it checks the file until it is empty and writes to a value variable which can be used to display the file
+
+## What is the difference between data in RAM and data stored in a file?
+
+RAM is volatile and hence can be deswtroyed when program ends. Storing in file is storing the data until we change the data in the file or delete it. it stays the same
+
+## Why will file I/O matter later when we work with GGUF/model files?
+
+We will save the model GGUF files and laod them from the disk rather than memory
+
+
+
+
+
+# Day 07 - 
