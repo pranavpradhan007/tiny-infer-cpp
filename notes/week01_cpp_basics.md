@@ -289,4 +289,32 @@ We will save the model GGUF files and laod them from the disk rather than memory
 
 
 
-# Day 07 - 
+# Day 07 - Week 1 Review
+
+## What happens between a .cpp file and an executable?
+
+.cpp file is where we write the code. executable is where the machine translated code lives
+
+## What are the main primitive/fundamental types we used this week?
+
+we used int, long long, float, double, char, bool.
+
+## What is std::vector, and why did we use it instead of a raw array?
+
+vector is a better way to use an array than raw array. raw arrays have a few disadvantages which in turn would make our code unprotected. vector has built in methods such as push_back(), pop_back() and emplace_back() which can be accessed with . operator and is helpful in stacking the data.
+
+## What does const mean?
+
+const means constant that is that value cannot change directly from anywhere else in the code apart from where it is declared.
+
+## What is the difference between pass-by-value and pass-by-reference?
+
+pass by value copies the data/value/heap to the function call again which in turn loses memory. pass by reference uses address of the memory to get the actual data stored in that specific address of the memory and does not make any copies as well when a function is called.
+
+## What is a struct, and why did we create TensorShape?
+
+struct is a structure/container which can be used to hold data. it can be used as a user defined data type. we used it for TensoShape as we do not need to define rows and colums again and again.
+
+## What confused me most during Week 1, and do I understand it now?
+
+Pretty much easy this week. Got to refresh my memory for basic concepts in LLM inference and C++ as well. Not much confusing apart from a few things I have yet to encounter. The confusion for daily progress has been reviewed and now I have a better understanding of the underlying basic concepts.
