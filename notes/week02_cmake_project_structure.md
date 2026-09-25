@@ -45,4 +45,34 @@ we keep the build files inside the build/ directory so that the cmake can build 
 
 
 
-# Day 09 - 
+# Day 09 - Header and Source Separation
+
+## What is the difference between a declaration and a definition?
+
+declaration is declaring the function before hand and definition is the writing the function body
+
+## What is the purpose of a .hpp header file?
+
+header files place every function declaration together even the structs as well
+
+## What is the purpose of a .cpp source file?
+
+we can modularize the code into different files so that main wont be bloated and confusing
+
+## Why do we use #pragma once?
+
+pragma once is used as a header guard so that our declarations are guarded from being declared and copied again and again
+
+## Why do we include memory.hpp instead of memory.cpp?
+
+that is a header file not a source code file so that it can be linked correctly to memory.cpp
+
+## What is the difference between compilation and linking?
+
+compilation is compiling the code file individually but linking is linking the exectuables to each other
+
+
+
+
+
+# Day 10 - 

@@ -1,67 +1,46 @@
+#include "tinyinfer/memory.hpp"
 #include <iostream>
-#include <fstream>
-#include <vector>
 #include <string>
 
 using namespace std;
 
-void save_vector_text(const string& path, const vector<double>& array)
-{
-    ofstream outf{path};
-    if(!outf)
-    {
-        cerr<<"vector.txt cannot be opened for writing!";
-        return;
-    }
-    for(int i =0; i<array.size(); i++) // for(double i : array) basically for i in array from python
-    {
-        outf<<array[i]<<"\n";
-    }
-}
-
-vector<double> load_vector_text(const string& path)
-{
-    ifstream inf{path};
-    if(!inf)
-    {
-        cerr<<"vector.txt cannot be opened for reading!";
-        return {}; 
-    }
-    vector<double> array{};
-    double value;
-    while(inf>>value)
-    {
-        array.push_back(value);
-    }
-
-    return array;
-
-}
-
 int main()
 {
-    int n{};
-    cout<<"How many values for the vector: ";
-    cin>>n;
-    double temp{};
-    vector<double> array;
-    if(n<=0)
+    const double million = 1e6; 
+    long long rows {};
+    long long columns {}; 
+    string data_type;
+    cout<<"Enter the number of rows: ";
+    cin>>rows;
+    cout<<"Enter the number of columns: ";
+    cin>>columns;
+
+    if (rows <= 0 || columns <= 0)
     {
-        cerr<<"Wrong input, values of vector must be > 0.";
+        cerr << "Rows and columns must be positive.\n";
         return 1;
     }
-    for(int i=0; i<n; i++)
+
+    cout<<"Enter the data type: ";
+    cin>>data_type;
+    long long elements{num_elements(rows,columns)};
+    cout<<"Number of elements: "<<elements<<'\n';
+    
+    if (data_type == "fp32")
     {
-        cout<<"Enter the "<<i<<" value of the vector: ";
-        cin>>temp;
-        array.push_back(temp);
+        cout<<"Bytes required: "<<bytes_fp32(elements)<<'\n';
+        cout<<"MB required: "<<bytes_to_mb(bytes_fp32(elements), million)<<'\n';
     }
-    const string path{"data/vector.txt"};
-    save_vector_text(path, array);
-    array=load_vector_text(path);
-    for(int i=0; i<array.size(); i++)
+
+    else if (data_type == "int8")
     {
-        cout<<"printing "<< i+1 <<" element: "<<array[i]<<'\n';
+        cout<<"Bytes required: "<<bytes_int8(elements)<<'\n';
+        cout<<"MB required: "<<bytes_to_mb(elements, million)<<'\n';
+    }
+    else
+    {
+        cerr<<"wrong data type! bye bye!";      
+        return 1;
     }
 
     return 0;
