@@ -105,4 +105,34 @@ due to conflicts with differnt functions from the standard namespace when the pr
 
 
 
-# Day 11 - 
+# Day 11 - Error Handling
+
+## What is an exception in C++?
+
+exception is the runtime error
+
+## What does throw do?
+
+throw throws the exception for catch to catch
+
+## What is std::runtime_error used for?
+
+report errors that happen while program runs due to events outside the programs control
+
+## What is the difference between try and catch?
+
+try is a loop which says the program to try and stop for any execptions while catch cathces them
+
+## Why should low-level functions throw errors instead of always printing errors themselves?
+
+they should validate what they are claiming to have as datatype or like a validation check for the function itself
+
+## What does exception.what() return?
+
+message of the exception
+
+
+
+
+
+# Day 12 - 

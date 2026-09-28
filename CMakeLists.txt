@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON) # Tells CMake not to silently fall back to a
 add_executable(tinyinfer
     src/main.cpp
     src/memory.cpp
+    src/file_io.cpp
+    src/vector_utils.cpp
 )
 
 target_include_directories(tinyinfer PRIVATE
