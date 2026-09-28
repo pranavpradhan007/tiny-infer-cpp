@@ -23,19 +23,19 @@ int main()
 
     cout<<"Enter the data type: ";
     cin>>data_type;
-    long long elements{num_elements(rows,columns)};
+    long long elements{tinyinfer::num_elements(rows,columns)};
     cout<<"Number of elements: "<<elements<<'\n';
     
     if (data_type == "fp32")
     {
-        cout<<"Bytes required: "<<bytes_fp32(elements)<<'\n';
-        cout<<"MB required: "<<bytes_to_mb(bytes_fp32(elements), million)<<'\n';
+        cout<<"Bytes required: "<<tinyinfer::bytes_fp32(elements)<<'\n';
+        cout<<"MB required: "<<tinyinfer::bytes_to_mb(tinyinfer::bytes_fp32(elements), million)<<'\n';
     }
 
     else if (data_type == "int8")
     {
-        cout<<"Bytes required: "<<bytes_int8(elements)<<'\n';
-        cout<<"MB required: "<<bytes_to_mb(elements, million)<<'\n';
+        cout<<"Bytes required: "<<tinyinfer::bytes_int8(elements)<<'\n';
+        cout<<"MB required: "<<tinyinfer::bytes_to_mb(elements, million)<<'\n';
     }
     else
     {

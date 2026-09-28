@@ -75,4 +75,34 @@ compilation is compiling the code file individually but linking is linking the e
 
 
 
-# Day 10 - 
+# Day 10 - Namespaces
+
+## What is a namespace in C++?
+
+namespaces exists in c++ so that there would be explicit naming of certain collision proven naming of things and we can use them more clearly
+
+## Why do namespaces help prevent naming conflicts?
+
+Namespaces help preventing conflicts as different namespaces can have different namespaces
+
+## What does the :: scope resolution operator do?
+
+it defines which namespace the certain function/variable belongs to
+
+## What is the difference between std::cout and tinyinfer::bytes_fp32()?
+
+cout from standard namespace and bytes_fp32 from tinyinfer namespace
+
+## Why should the declaration and definition of a function be inside the same namespace?
+
+so that there wont be mismatch and collisions
+
+## Why can using namespace std; become risky in larger projects?
+
+due to conflicts with differnt functions from the standard namespace when the project evolves
+
+
+
+
+
+# Day 11 - 
