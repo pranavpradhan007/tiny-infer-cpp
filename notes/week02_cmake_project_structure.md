@@ -135,4 +135,34 @@ message of the exception
 
 
 
-# Day 12 - 
+# Day 12 - References and Pointers
+
+## What is the difference between pass by value and pass by reference?
+
+pass by value is copying the element again to stack and by reference is refering the original value in the stack
+
+## What is a reference in C++?
+
+reference is the address of the value
+
+## What is a pointer in C++, and what does it store?
+
+pointer is a object which stores address of the value
+
+## What is the difference between &number, ptr, and *ptr?
+
+address of number as a lvalue reference, address stored in pointer, derefering the ptr to show us the underlyiong object
+
+## What is nullptr, and why should we never dereference a null pointer?
+
+nullptr is a special keyword which is basically giving a null value to the pointer. dereferencing does not make sense as there is nothing to dereference
+
+## How are Python variables/references different from C++ variables, references, and pointers?
+
+In Python, variables usually refer to objects automatically and you do not explicitly work with pointers or references. In C++, variables can directly contain values, references can alias existing objects, and pointers explicitly store memory addresses
+
+
+
+
+
+# Day 13 - 
