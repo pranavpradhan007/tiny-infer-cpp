@@ -7,6 +7,7 @@ add_executable(tinyinfer
     src/memory.cpp
     src/file_io.cpp
     src/vector_utils.cpp
+    src/tensor.cpp
 )
 
 target_include_directories(tinyinfer PRIVATE

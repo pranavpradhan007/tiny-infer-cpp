@@ -1,37 +1,29 @@
+#include "tinyinfer/tensor.hpp"
 #include <iostream>
-
-void increment_by_value(int number)
-{
-    ++number;
-}
-
-void increment_by_reference(int& number)
-{
-    ++number;
-}
+#include <stdexcept>
 
 int main()
 {
-    int number {10};
-    std::cout << "Original value: " << number << '\n';
-    increment_by_value(number);
-    std::cout << "After pass by value: " << number << '\n';
-    increment_by_reference(number);
-    std::cout << "After pass by reference: " << number << '\n';
+    long long rows{};   
+    long long cols{};
 
-    int* ptr{&number};
-    std::cout<<"The integer value: "<<number<<'\n';
-    std::cout<<"The integer's memory address: "<<&number<<'\n';
-    std::cout<<"The address stored inside the pointer: "<<ptr<<'\n';
-    std::cout<<"The value obtained by dereferencing the pointer: "<<*ptr<<'\n';
-    int* ptr1{nullptr};
-    if(ptr1)
+    std::cout<<"Enter the number of rows: ";
+    std::cin>>rows;
+    std::cout<<"Enter the number of columns: ";
+    std::cin>>cols;
+    try
     {
-        std::cout<<"is not a nullpointer";
+        tinyinfer::Tensor matrix{rows, cols};
+        std::cout<<"Rows: "<<matrix.rows()<<'\n';
+        std::cout<<"Columns: "<<matrix.cols()<<'\n';
+        std::cout<<"The total number of elements in the tensor: "<<matrix.size()<<'\n';
+        return 0;
+
     }
-    else
+    catch(const std::runtime_error& exception)
     {
-        std::cout<<"is a nullpointer";
+        std::cerr<<"Error: "<<exception.what()<<'\n';
+        return 1;
     }
-    return 0;
+    
 }
