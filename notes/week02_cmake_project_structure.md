@@ -199,4 +199,28 @@ it auto manages memory allocation and destruction for us so we dont have to thin
 
 
 
-# Day 14 - 
+# Day 14 - Week 2 Review
+
+## What is the full build flow from CMakeLists.txt to the final executable?
+
+CMake parses CMakeLists.txt during configuration and generation to produce native build scripts (e.g., Ninja or Makefiles), which then direct the compiler to preprocess and compile source files into .o object files before the linker combines them into the final executable.
+
+## What is the difference between a header file and a source file?
+
+Headers (.hpp/.h) declare types, constants, and function prototypes shared across translation units via #include, while source files (.cpp) contain the actual implementation logic compiled into isolated object files.
+
+## Why do we use the tinyinfer namespace?
+
+scopes project symbols and types within an isolated domain to prevent naming collisions with external libraries, third-party frameworks, or the global namespace.
+
+## How does exception handling work from throw to catch?
+
+When throw executes, the runtime halts normal execution and initiates stack unwinding, calling destructors for all in-scope stack objects in reverse order until a matching catch block is reached up the call stack.
+
+## What is the difference between pass by value, reference, and pointer?
+
+Pass by value creates an independent, isolated copy; pass by reference creates an overhead-free alias to the original variable without allowing null; pass by pointer passes a memory address that can be reassigned or set to nullptr.
+
+## What is RAII, and why are we using std::vector<float> instead of raw new/delete for tensor data?
+
+Resource Acquisition Is Initialization (RAII) ties resource management directly to an object's stack lifetime. std::vector<float> adheres to RAII by allocating heap memory on construction and automatically freeing it when the vector exits scope, eliminating manual delete calls, double frees, and memory leaks.
