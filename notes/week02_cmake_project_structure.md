@@ -165,4 +165,38 @@ In Python, variables usually refer to objects automatically and you do not expli
 
 
 
-# Day 13 - 
+# Day 13 - RAII and Memory Safety
+
+## Why will I avoid raw new and delete in Tiny Infer?
+
+I will avoid the raw new and delete as there can be mismanagement of memory. I will use the std::vector<float> to auto manage memory for me using RAII principles. Tensor data will use std::vector<float>. I will avoid manual dynamic arrays.
+
+## What is RAII?
+
+Resource Acquisition Is Initialization is a principle that the code that creates a resource also cleans it up automatically.
+
+## What is a memory leak?
+
+memory leak is forgeting to deallocate a memory before we make change to the dynamically allocated pointer.
+
+## Why can raw new and delete be dangerous?
+
+manual memory management, dangling pointers, dereferenceing thealready deleted pointer, etc
+
+## What is a dangling pointer?
+
+ a pointer that points to a memory location that has already been deleted or freed
+
+## Why is std::vector safer than manually allocating a dynamic array?
+
+it auto manages memory allocation and destruction for us
+
+## Why are we choosing std::vector<float> for Tiny Infer tensor storage?
+
+it auto manages memory allocation and destruction for us so we dont have to think about dynamic arrays
+
+
+
+
+
+# Day 14 - 
