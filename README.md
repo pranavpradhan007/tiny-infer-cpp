@@ -1,4 +1,4 @@
-# Tiny Infer — From-Scratch C++ Inference Engine
+# Tiny Infer : From-Scratch C++ Inference Engine
 
 A from-scratch C++ project for learning low-level AI inference systems, memory handling, tensor operations, quantization, model formats, benchmarking, and performance optimization.
 

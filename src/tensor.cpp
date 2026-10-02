@@ -1,5 +1,6 @@
 #include "tinyinfer/tensor.hpp"
 #include <stdexcept>
+#include <iostream>
 
 namespace tinyinfer
 {
@@ -23,5 +24,32 @@ namespace tinyinfer
     long long tinyinfer::Tensor::size() const
     {
         return rows_*cols_;
-    };
+    }
+
+    float& tinyinfer::Tensor::at(int row, int col)
+    {
+        long long index{};
+        index = row *cols_ +col; //the indexing formula for the vector storage.specific row x number of columns + the specific column
+        return data_[index];
+    }
+
+    float tinyinfer::Tensor::at(int row, int col) const
+    {
+        long long index{};
+        index = row *cols_ +col;
+        return data_[index];
+    }
+
+    void tinyinfer::Tensor::print() const
+    {
+        for(int i{0}; i<rows_; i++)
+        {
+            for(int j{0}; j<cols_; j++)
+            {
+                std::cout<<at(i ,j)<<" ";
+            }
+            std::cout<<'\n';
+        }
+    }
+
 }

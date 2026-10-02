@@ -12,9 +12,14 @@ namespace tinyinfer
             std::vector<float> data_{};
         public:
             Tensor(long long rows, long long cols);
-            long long rows() const {return rows_;} //getter for rows_. we get the data from rows to rows_. They let outside code read private members without directly touching them.
-            long long cols() const {return cols_;} //getter for cols_. we get the data from cols to cols_. They let outside code read private members without directly touching them. 
+            long long rows() const {return rows_;} //getter for rows_.
+            long long cols() const {return cols_;} //getter for cols_.
+
 
             long long size() const;
+            float& at(int row, int col); //modifyable as non constant
+            float at(int row, int col) const; //read only as constant
+            void print() const;
+
     };
 }
