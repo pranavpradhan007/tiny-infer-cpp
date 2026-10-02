@@ -35,7 +35,7 @@ int main()
         return 0;
 
     }
-    catch(const std::runtime_error& exception)
+    catch(const std::exception& exception) //exception is more general than using runtime_error or out_of_range here
     {
         std::cerr<<"Error: "<<exception.what()<<'\n';
         return 1;

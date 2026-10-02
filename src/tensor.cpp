@@ -29,6 +29,10 @@ namespace tinyinfer
     float& tinyinfer::Tensor::at(int row, int col)
     {
         long long index{};
+        if(row<0||row>=rows_||col<0||col>=cols_)
+        {
+            throw std::out_of_range("tensor index out of bounds");
+        }
         index = row *cols_ +col; //the indexing formula for the vector storage.specific row x number of columns + the specific column
         return data_[index];
     }
@@ -36,6 +40,10 @@ namespace tinyinfer
     float tinyinfer::Tensor::at(int row, int col) const
     {
         long long index{};
+        if(row<0||row>=rows_||col<0||col>=cols_)
+        {
+            throw std::out_of_range("tensor index out of bounds");
+        }
         index = row *cols_ +col;
         return data_[index];
     }

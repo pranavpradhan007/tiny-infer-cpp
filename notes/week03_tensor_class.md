@@ -69,4 +69,26 @@ print() is a member function of Tensor, so it can directly access that Tensor ob
 
 
 
-# Day 17 - 
+# Day 17 - Bounds Checking and Exceptions
+
+## Self notes
+
+- For a Tensor: rows_ = 2 cols_ = 3 : a row must satisfy: `0 <= row < rows_` And a column must satisfy: `0 <= col < cols_`
+
+## What condition makes a Tensor index (row, col) out of bounds?
+
+For a Tensor: rows_ = 2 cols_ = 3 : a row must satisfy: `0 <= row < rows_` And a column must satisfy: `0 <= col < cols_`
+
+## Why is std::out_of_range a better exception choice for invalid Tensor indices than a generic error?
+
+std::out_of_range is appropriate because the requested row or column is outside the valid range of indices for the Tensor.
+
+## Why must the bounds check happen before accessing data_[index]?
+
+or we can have funny situations with negative indexes and non existant indexes of an array
+
+
+
+
+
+# Day 18 - 
