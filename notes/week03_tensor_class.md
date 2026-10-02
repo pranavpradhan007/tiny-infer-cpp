@@ -91,4 +91,33 @@ or we can have funny situations with negative indexes and non existant indexes o
 
 
 
-# Day 18 - 
+# Day 18 - Tensor Utility Methods
+
+## Self notes
+
+- for range-based for loops, prefer to define the element type as:
+    - auto when you want to modify copies of the elements.
+    - auto& when you want to modify the original elements.
+    - const auto& otherwise (when you just need to view the original elements).
+
+## What does fill(float value) do to the Tensor?
+
+fills the tensor with the float value
+
+## What does raw_data() return, and how is it different from at(row, col)?
+
+returns the raw data which is the vector/tensor we are storing. at() function gives us the specific row and column to change while raw data gives us the original data
+
+## What is the difference between returning std::vector<float> and returning std::vector<float>&?
+
+copying vs pointing to the original memory space
+
+## Why did we use const std::vector<float>& data{matrix.raw_data()}; when calculating the sum?
+
+we did not want to create the copy of the vector again but want to see what is the sum afterwards even if we change a specific element in the matrix after data copy is established.
+
+
+
+
+
+# Day 19 - 

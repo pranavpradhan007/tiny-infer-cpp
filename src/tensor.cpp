@@ -60,4 +60,21 @@ namespace tinyinfer
         }
     }
 
+    void tinyinfer::Tensor::fill(float value)
+    {
+        for(auto& element : data_)
+        {
+            element=value;
+        }
+    }
+
+    std::vector<float>& tinyinfer::Tensor::raw_data()
+    {
+        return data_;
+    }
+
+    const std::vector<float>& tinyinfer::Tensor::raw_data() const
+    {
+        return data_;
+    }
 }

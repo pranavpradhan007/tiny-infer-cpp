@@ -20,6 +20,10 @@ namespace tinyinfer
             float& at(int row, int col); //modifyable as non constant
             float at(int row, int col) const; //read only as constant
             void print() const;
+            
+            void fill(float value);
+            std::vector<float>& raw_data();
+            const std::vector<float>& raw_data() const;
 
     };
 }
