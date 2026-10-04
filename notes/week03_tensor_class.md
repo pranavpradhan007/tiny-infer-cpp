@@ -120,4 +120,30 @@ we did not want to create the copy of the vector again but want to see what is t
 
 
 
-# Day 19 - 
+# Day 19 - Random Tensor Generation
+
+## What is a seed in random number generation, and why does the same seed produce the same sequence?
+
+A seed is the initial starting value used to initialize a pseudo-random number generator. Since the generator follows a deterministic algorithm, the same seed produces the same sequence.
+
+## What is the role of std::mt19937?
+
+Mersenne Twister 64 bit unsigned integer which is a pseudo random value.
+
+## What does std::uniform_real_distribution<float>(min, max) do?
+
+creates a uniform distribution in interval [min,max)
+
+## What is the difference between random_vector() and random_tensor()?
+
+random_vector() produces a new random vector while random_tensor() produces a new random tensor
+
+## Why does random_tensor() use raw_data() instead of repeatedly calling at(row, col) for every element?
+
+raw_data() gives us the underlying data_ in the tensor while at() is used for a specific position in the tensor
+
+
+
+
+
+# Day 20 - 

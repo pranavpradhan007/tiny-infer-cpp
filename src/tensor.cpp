@@ -1,6 +1,7 @@
 #include "tinyinfer/tensor.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <random>
 
 namespace tinyinfer
 {
@@ -76,5 +77,35 @@ namespace tinyinfer
     const std::vector<float>& tinyinfer::Tensor::raw_data() const
     {
         return data_;
+    }
+
+    std::vector<float> tinyinfer::random_vector(int size, float min, float max)
+    {
+        std::random_device rd;//seed part for like seed 42 we can do something like int seed{42}; std::mt19937 gen(seed);
+        std::mt19937 gen(rd());//generate part 
+        std::uniform_real_distribution<float> dis(min,max); //distribution part
+        std::vector<float> vector(size); // () is the  constructor and {} is the value initialization
+
+        for(int i{0}; i<size; i++)
+        {
+            vector[i]=dis(gen); //distribution of the generated random variable
+        }
+        return vector;
+    }
+
+    tinyinfer::Tensor tinyinfer::random_tensor(long long rows, long long cols, float min, float max)
+    {
+       
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<float> dis(min,max);
+        tinyinfer::Tensor rtensor{rows , cols};
+        std::vector<float>& data{rtensor.raw_data()};
+        for(auto& element:data)
+        {
+            element=dis(gen);
+        }
+        return rtensor;
+
     }
 }

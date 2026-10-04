@@ -26,4 +26,7 @@ namespace tinyinfer
             const std::vector<float>& raw_data() const;
 
     };
+
+    std::vector<float> random_vector(int size, float min, float max);
+    tinyinfer::Tensor random_tensor(long long rows, long long cols, float min, float max);
 }
