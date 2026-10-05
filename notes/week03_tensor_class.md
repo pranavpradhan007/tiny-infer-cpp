@@ -146,4 +146,32 @@ raw_data() gives us the underlying data_ in the tensor while at() is used for a 
 
 
 
-# Day 20 - 
+# Day 20 - Tensor Text Serialization
+
+## What is serialization, and what is deserialization?
+
+Serialization converts a C++ object in memory into a sequence of bytes or a string, while deserialization takes that byte stream and reconstructs the original object back into memory.
+
+## Why do we save rows and cols in the file instead of saving only the Tensor values?
+
+so that we can reconstruct the whole tensor correctly as rows x cols shape
+
+## Why does save_tensor_text() use a const std::vector<float>&?
+
+as we dont want to modify the vector and use a reference as we want to save it at the location itself instead of making a copy again
+
+## Why does load_tensor_text() use a std::vector<float>&?
+
+it wants to load from reference memory directly instead of from a copy
+
+## What is the full flow of loading a Tensor from a text file, from opening the file to returning the reconstructed Tensor?
+
+see if the file exists, if not throw an error, get the rows and the cols and put it in the tensor to create a rows x cols initialization of the tensor, then get the raw data from the initialized tensor which would be a vector with 0 initalixed values. then the stream gets the data into the data variable vector which we defined earlier and changes the value of thew raw data underlying in that tensor then we return the tensor
+
+
+
+
+
+# Day 21 - Week 3 Review
+
+## 
