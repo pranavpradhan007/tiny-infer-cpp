@@ -174,4 +174,18 @@ see if the file exists, if not throw an error, get the rows and the cols and put
 
 # Day 21 - Week 3 Review
 
-## 
+## What is a Tensor?
+
+A Tensor in Tiny Infer V1 is a 2D data structure with rows_, cols_, and a contiguous std::vector<float> that stores all elements.
+
+## How does row-major storage work?
+
+Row-major storage means all elements of one row are stored contiguously before the next row. A 2D position is converted to a 1D index using: `index = row * cols_ + col`
+
+## Why is std::vector<float> enough for V1 of Tiny Infer?
+
+`std::vector<float>` is enough for V1 because it provides dynamic sizing, contiguous memory, automatic memory management, and simple iteration while storing the float values needed for our current Tensor operations.
+
+## What do I still not understand or feel confused about from Week 3?
+
+This week was coding heavy. I sometimes understand the individual concepts but cannot immediately visualize the full program structure from the problem statement. I still need clarification to break the problem into inputs, outputs, functions, and program flow. I expect this to improve with practice and experience.
