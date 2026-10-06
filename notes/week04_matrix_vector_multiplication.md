@@ -42,4 +42,18 @@ The other tests expect a numerical output, while the dimension mismatch test exp
 
 
 
-# Day 24 - 
+# Day 24 - Dot Product Helper and Function Decomposition
+
+## What does dot_product_row() calculate?
+
+calculates the dot product of the row
+
+## Why did we move the inner MatVec loop into a separate helper function instead of keeping everything inside matvec_naive()?
+
+we can modularize and use helper functions in the future
+
+
+
+
+
+# Day 25 - 

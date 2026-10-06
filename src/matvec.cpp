@@ -12,16 +12,21 @@ namespace tinyinfer
             throw std::runtime_error("The matrix columns and size of vector should be the same for multiplication");
         }
         std::vector<float> result(matrix.rows());
-        float sum{0};
-        for(int row=0; row<matrix.rows(); row++)
+        
+        for(long long row=0; row<matrix.rows(); row++)
         {
-            sum=0;
-            for(int col=0; col<matrix.cols(); col++)
+            result[row]=tinyinfer::dot_product_row(matrix, row, vector);
+        }
+        return result;
+    }
+
+    float tinyinfer::dot_product_row(const tinyinfer::Tensor& matrix, long long row, const std::vector<float>& vector)
+    {
+        float sum{0};
+        for(long long col=0; col<matrix.cols(); col++)
             {
                 sum+=matrix.at(row,col)*vector[col];
             }
-            result[row]=sum;
-        }
-        return result;
+        return sum;
     }
 }
