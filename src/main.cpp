@@ -1,64 +1,105 @@
-#include "tinyinfer/tensor.hpp"
-// #include "tinyinfer/tensor_io.hpp"
 #include "tinyinfer/matvec.hpp"
+#include "tinyinfer/tensor.hpp"
+
+#include <cassert>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
-#include <string>
 
 int main()
 {
-    long long rows{};   
-    long long cols{};
-    float min{0};
-    float max{0};
-    int size{};
 
-    std::cout<<"Enter the number of rows: ";
-    std::cin>>rows;
-    std::cout<<"Enter the number of columns: ";
-    std::cin>>cols;
-    try
     {
-        std::cout<<'\n';
-        std::cout<<"Enter the size of the vector: ";
-        std::cin>>size;
-        std::cout<<"Maximum and minimum values of the elements in the tensor and vector: ";
-        std::cin>>min;
-        std::cin>>max;
-        float temp{};
-        if(min>max)
-        {
-            temp=min;
-            min=max;
-            max=temp;
-        }
-        std::vector<float> rvector{tinyinfer::random_vector(size, min, max)};
-        std::cout<<"Random vector: "<<'\n';
-        for(const auto& element: rvector)
-        {
-            std::cout<<element<<" ";
-        }
-        std::cout<<'\n';
-        
-        std::cout<<"Random tensor: "<<'\n';
-        tinyinfer::Tensor rmatrix{tinyinfer::random_tensor(rows,cols,min,max)};
-        rmatrix.print();
-        
-        std::cout<<'\n'<<"MatVec multipication: "<<'\n';
-        std::vector<float> mresult{tinyinfer::matvec_naive(rmatrix, rvector)};
-        for(const auto& element: mresult)
-        {
-            std::cout<<element<<" ";
-        }
-        
-        return 0;
+        tinyinfer::Tensor matrix{2, 3};
 
+        matrix.at(0, 0) = 1.0f;
+        matrix.at(0, 1) = 2.0f;
+        matrix.at(0, 2) = 3.0f;
+
+        matrix.at(1, 0) = 4.0f;
+        matrix.at(1, 1) = 5.0f;
+        matrix.at(1, 2) = 6.0f;
+
+        std::vector<float> vector{10.0f, 20.0f, 30.0f};
+
+        std::vector<float> result{
+            tinyinfer::matvec_naive(matrix, vector)
+        };
+
+        assert(result.size() == 2);
+        assert(result[0] == 140.0f);
+        assert(result[1] == 320.0f);
     }
-    catch(const std::exception& exception) //exception is more general than using runtime_error or out_of_range here
+
+
     {
-        std::cerr<<"Error: "<<exception.what()<<'\n';
-        return 1;
+        tinyinfer::Tensor matrix{1, 1};
+
+        matrix.at(0, 0) = 5.0f;
+
+        std::vector<float> vector{3.0f};
+
+        std::vector<float> result{
+            tinyinfer::matvec_naive(matrix, vector)
+        };
+
+        assert(result.size() == 1);
+        assert(result[0] == 15.0f);
     }
-    
+
+    {
+        tinyinfer::Tensor matrix{2, 2};
+
+        std::vector<float> vector{5.0f, -3.0f};
+
+        std::vector<float> result{
+            tinyinfer::matvec_naive(matrix, vector)
+        };
+
+        assert(result.size() == 2);
+        assert(result[0] == 0.0f);
+        assert(result[1] == 0.0f);
+    }
+
+    {
+        tinyinfer::Tensor matrix{2, 2};
+
+        matrix.at(0, 0) = 1.0f;
+        matrix.at(0, 1) = 0.0f;
+        matrix.at(1, 0) = 0.0f;
+        matrix.at(1, 1) = 1.0f;
+
+        std::vector<float> vector{5.0f, 8.0f};
+
+        std::vector<float> result{
+            tinyinfer::matvec_naive(matrix, vector)
+        };
+
+        assert(result.size() == 2);
+        assert(result[0] == 5.0f);
+        assert(result[1] == 8.0f);
+    }
+
+    {
+        tinyinfer::Tensor matrix{2, 3};
+
+        std::vector<float> vector{10.0f, 20.0f};
+
+        bool exception_thrown{false};
+
+        try
+        {
+            tinyinfer::matvec_naive(matrix, vector);
+        }
+        catch (const std::runtime_error&)
+        {
+            exception_thrown = true;
+        }
+
+        assert(exception_thrown);
+    }
+
+    std::cout << "All MatVec tests passed!\n";
+
+    return 0;
 }

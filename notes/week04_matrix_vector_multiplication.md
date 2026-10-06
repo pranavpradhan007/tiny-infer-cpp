@@ -24,4 +24,22 @@ size_t is a cpp variable used for size() values. we use static_cast<long long> a
 
 
 
-# Day 23 - 
+# Day 23 - MatVec Validation
+
+## What is the purpose of using assert() in our MatVec tests?
+
+assert() checks that a condition we expect to be true is actually true. If it is false, the test fails and helps reveal a bug in our program logic.
+
+## Why do we test cases like 1x1, zero matrix, and identity matrix instead of only the normal 2x3 example?
+
+We test different cases to make sure MatVec works beyond one normal example. 1x1 tests the smallest valid case, the zero matrix checks zero accumulation, and the identity matrix checks that the vector remains unchanged.
+
+## Why is the dimension mismatch test different from the other tests?
+
+The other tests expect a numerical output, while the dimension mismatch test expects matvec_naive() to fail by throwing an exception.
+
+
+
+
+
+# Day 24 - 
