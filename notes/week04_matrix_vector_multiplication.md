@@ -126,4 +126,22 @@ C++ provides low-level control over memory management, data structures, and CPU 
 
 # Day 28 - Week 4 Review
 
-## 
+## What did we implement during Week 4?
+
+We implemented naive matrix-vector multiplication using matvec_naive() and refactored its calculation into a dot_product_row() helper. We also added correctness tests using assertions and almost_equal() for floating-point comparisons. Finally, we created a CLI that allows users to specify matrix dimensions through terminal arguments.
+
+## How does matvec_naive() work? 
+
+matvec_naive() multiplies an R × C matrix by a vector of length C and returns a vector of length R. It loops through every matrix row and calls dot_product_row(), which multiplies and sums the corresponding elements. Its time complexity is O(R × C) because every matrix element is processed once.
+
+## How did we test the correctness of our MatVec implementation?
+
+We used assert() to check whether our output matched the expected results. We tested normal multiplication, a 1×1 matrix, a zero matrix, an identity matrix, and mismatched dimensions. We also introduced almost_equal() to account for small floating-point rounding differences.
+
+## How does our CLI make Tiny Infer more useful?
+
+The CLI allows users to specify matrix dimensions directly from the terminal instead of changing the source code or using interactive cin input. This makes it easier to run different workloads repeatedly, automate experiments, and eventually benchmark Tiny Infer's performance.
+
+## What is the most important thing you learned in Week 4, and what are you still confused about?
+
+I learned that matvec_naive is a GEMV multiplication. confusing thing was the argv and argc things we did. other than that it was helpful. the cli stuff with stoll and stoi was also a little confusing as well.
