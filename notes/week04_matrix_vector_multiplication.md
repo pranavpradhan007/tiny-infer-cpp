@@ -102,4 +102,28 @@ We use argv[++i] because we need to access the argument immediately after --rows
 
 
 
-# Day 27 - 
+# Day 27 - MatVec and LLM Inference
+
+## Why is matrix-vector multiplication important in LLM inference?
+
+Matrix-vector multiplication is a fundamental operation in neural networks and LLM inference. An LLM contains weight matrices that transform input vectors into output vectors using operations such as y = Wx + b. During token-by-token decoding, especially with batch size 1, many linear layers perform matrix-vector-like operations. Our matvec_naive() function implements the basic multiplication Wx, helping us understand how numerical computations happen inside an inference engine.
+
+## What is the difference between matrix-vector multiplication (MatVec) and matrix-matrix multiplication (MatMul)?
+
+MatVec multiplies a matrix of size M × K by a vector of size K and produces an output vector of size M. MatMul multiplies two matrices of sizes M × K and K × N, producing an output matrix of size M × N. In LLM inference, MatMul is commonly used during prefill because multiple prompt tokens can be processed together. MatVec is common during single-request, batch-size-1 decoding because the model processes one new token's representation at a time. However, batched decoding can also use MatMul.
+
+## Why are weight matrices in large language models so large?
+
+Weight matrices contain the learned parameters that an LLM uses to transform and process information. These matrices are large because LLMs work with representations containing thousands of features and have many layers with multiple weight matrices in each layer. Larger matrices require more memory to store their parameters and more memory bandwidth to access them during inference. This makes techniques such as quantization and efficient memory access important for optimizing LLM performance.
+
+## Why does C++ performance matter for AI inference?
+
+C++ provides low-level control over memory management, data structures, and CPU execution, which is useful for performance-critical AI operations. We can apply techniques such as SIMD, multithreading, cache-friendly memory access, and quantization to improve numerical computation. Optimized implementations can reduce inference latency, improve throughput, and lower computational costs. Our Tiny Infer project helps us understand these operations manually before learning more advanced CPU and GPU optimizations.
+
+
+
+
+
+# Day 28 - Week 4 Review
+
+## 
