@@ -1,105 +1,109 @@
-#include "tinyinfer/matvec.hpp"
 #include "tinyinfer/tensor.hpp"
-
-#include <cassert>
+// #include "tinyinfer/tensor_io.hpp"
+#include "tinyinfer/matvec.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <string>
 
-int main()
+int main(int argc , char* argv[])
 {
-
+    long long rows{};   
+    long long cols{};
+    float min{-1.0f};
+    float max{1.0f};
+    bool rows_found{false};
+    bool cols_found{false};
+    try
     {
-        tinyinfer::Tensor matrix{2, 3};
-
-        matrix.at(0, 0) = 1.0f;
-        matrix.at(0, 1) = 2.0f;
-        matrix.at(0, 2) = 3.0f;
-
-        matrix.at(1, 0) = 4.0f;
-        matrix.at(1, 1) = 5.0f;
-        matrix.at(1, 2) = 6.0f;
-
-        std::vector<float> vector{10.0f, 20.0f, 30.0f};
-
-        std::vector<float> result{
-            tinyinfer::matvec_naive(matrix, vector)
-        };
-
-        assert(result.size() == 2);
-        assert(tinyinfer::almost_equal(result[0], 140.0f));
-        assert(tinyinfer::almost_equal(result[1], 320.0f));
-    }
-
-
-    {
-        tinyinfer::Tensor matrix{1, 1};
-
-        matrix.at(0, 0) = 5.0f;
-
-        std::vector<float> vector{3.0f};
-
-        std::vector<float> result{
-            tinyinfer::matvec_naive(matrix, vector)
-        };
-
-        assert(result.size() == 1);
-        assert(tinyinfer::almost_equal(result[0], 15.0f));
-    }
-
-    {
-        tinyinfer::Tensor matrix{2, 2};
-
-        std::vector<float> vector{5.0f, -3.0f};
-
-        std::vector<float> result{
-            tinyinfer::matvec_naive(matrix, vector)
-        };
-
-        assert(result.size() == 2);
-        assert(tinyinfer::almost_equal(result[0], 0.0f));
-        assert(tinyinfer::almost_equal(result[1], 0.0f));
-    }
-
-    {
-        tinyinfer::Tensor matrix{2, 2};
-
-        matrix.at(0, 0) = 1.0f;
-        matrix.at(0, 1) = 0.0f;
-        matrix.at(1, 0) = 0.0f;
-        matrix.at(1, 1) = 1.0f;
-
-        std::vector<float> vector{5.0f, 8.0f};
-
-        std::vector<float> result{
-            tinyinfer::matvec_naive(matrix, vector)
-        };
-
-        assert(result.size() == 2);
-        assert(tinyinfer::almost_equal(result[0], 5.0f));
-        assert(tinyinfer::almost_equal(result[1], 8.0f));
-    }
-
-    {
-        tinyinfer::Tensor matrix{2, 3};
-
-        std::vector<float> vector{10.0f, 20.0f};
-
-        bool exception_thrown{false};
-
-        try
+        if(argc!=6 || std::string(argv[1])!="matvec")
         {
-            tinyinfer::matvec_naive(matrix, vector);
-        }
-        catch (const std::runtime_error&)
-        {
-            exception_thrown = true;
+            throw std::invalid_argument("Usage: tinyinfer matvec --rows <R> --cols <C>");
         }
 
-        assert(exception_thrown);
+        for(int i{2}; i<argc; i++)
+        {
+            std::string arg= argv[i];
+            if(arg=="--rows")
+            {
+                if(rows_found||i+1 >= argc)
+                {
+                    throw std::invalid_argument("Missing or duplicate --rows argument");
+                }
+                std::string value{argv[++i]};
+                std::size_t pos{0};
+
+                rows = std::stoll(value, &pos);  //string to long long 
+                if(pos!= value.size())
+                {
+                    throw std::invalid_argument("Rows must be a valid integer");
+                }
+                rows_found=true;
+            }
+            else if (arg=="--cols")
+            {
+                if (cols_found || i + 1 >= argc)
+                {
+                    throw std::invalid_argument("Invalid or duplicate --cols argument");
+                }
+                std::string value{argv[++i]};
+                std::size_t pos{0};
+
+                cols = std::stoll(value, &pos);
+
+                if (pos != value.size())
+                {
+                    throw std::invalid_argument("Columns must be a valid integer");
+                }
+
+                cols_found = true;
+            }
+            else
+            {
+                throw std::invalid_argument("Unknown argument: " + arg);
+            }
+        }
+
+        if (!rows_found || !cols_found)
+        {
+            throw std::invalid_argument("Both --rows and --cols are required");
+        }
+
+        if (rows <= 0 || cols <= 0)
+        {
+            throw std::invalid_argument("Rows and columns must be positive");
+        }
+
+        constexpr long long max_dimension{4096};
+
+        if (rows > max_dimension || cols > max_dimension)
+        {
+            throw std::invalid_argument("Matrix dimensions must not exceed 4096");
+        }
+
+        std::vector<float> rvector{tinyinfer::random_vector(cols, min, max)};
+        std::cout<<"Random vector: "<<'\n';
+        std::cout << "Generated random vector: "<< rvector.size() << '\n';
+        
+
+        
+        std::cout<<"Random tensor: "<<'\n';
+        tinyinfer::Tensor rmatrix{tinyinfer::random_tensor(rows,cols,min,max)};
+        std::cout << "Generated random matrix: "<< rmatrix.rows() << " x "<< rmatrix.cols() << '\n';
+        
+        std::cout<<'\n'<<"MatVec multipication: "<<'\n';
+        std::vector<float> mresult{tinyinfer::matvec_naive(rmatrix, rvector)};
+        std::cout << "Output size: "<< mresult.size() << '\n';
+
+        std::cout << "First output value: "<< mresult.at(0) << '\n';
+        
+        return 0;
+
     }
-
-    std::cout << "All MatVec tests passed!\n";
-
-    return 0;
+    catch(const std::exception& exception) //exception is more general than using runtime_error or out_of_range here
+    {
+        std::cerr<<"Error: "<<exception.what()<<'\n';
+        return 1;
+    }
+    
 }

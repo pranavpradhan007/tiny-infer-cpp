@@ -78,4 +78,28 @@ so that the comparison of floating point numbers would not result in random expr
 
 
 
-# Day 26 - 
+# Day 26 - Command-Line Interface (CLI)
+
+## What are argc and argv in C++? How do they help our Tiny Infer program receive commands from the terminal?
+
+they are argument count and argument vector. they help in using cli commands 
+
+## Why do we use std::stoll() when reading rows and columns from argv? What is the purpose of pos in our implementation?
+
+std::stoll means string to long long. We use std::stoll() to convert command-line arguments from strings into long long integers. We use pos to check how many characters were processed during conversion. If pos is not equal to the string's size, the input contains extra invalid characters, so we reject it.
+
+## Why do we validate command-line arguments in main() even though our Tensor class and MatVec functions already perform validation?
+
+think of validation as a layered. we need to  validate before in main as to have validation for the cli
+
+## What is the difference between i++ and ++i? Why did we use argv[++i] when reading values after --rows and --cols?
+
+i++ is post-increment. It uses the current value of i first and then increments it by 1.
+++i is pre-increment. It increments i by 1 first and then uses the updated value.
+We use argv[++i] because we need to access the argument immediately after --rows or --cols, which contains the numerical value.
+
+
+
+
+
+# Day 27 - 
