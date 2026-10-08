@@ -56,4 +56,26 @@ we can modularize and use helper functions in the future
 
 
 
-# Day 25 - 
+# Day 25 - Floating-Point Comparison
+
+## Why should we avoid using == when comparing floating-point results from calculations?
+
+as floating point numbers have almost values. like for example 0.1+0.2=0.3 is mathematically true but for comparison of floating point the result would be 0.3000000001 or 2.9999999998
+
+## What is epsilon (eps), and how does almost_equal() use it to compare two numbers?
+
+epsilon is a value for which when we compare we get almost equal result 
+
+## Why do we use std::abs(a - b) instead of simply a - b?
+
+we do not care wether the value is +ve or -ve
+
+## Why is almost_equal() important for our Tiny Infer project, especially when we later implement optimized MatVec operations?
+
+so that the comparison of floating point numbers would not result in random expression values. the values might be mathematically equivalent but differ slightly because of floating point rounding
+
+
+
+
+
+# Day 26 - 

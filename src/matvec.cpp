@@ -2,6 +2,8 @@
 #include "tinyinfer/tensor.hpp"
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
+#include <cmath>
 
 namespace tinyinfer
 {
@@ -28,5 +30,15 @@ namespace tinyinfer
                 sum+=matrix.at(row,col)*vector[col];
             }
         return sum;
+    }
+
+    bool tinyinfer::almost_equal(double a, double b, double eps)
+    {
+        double abs_diff{std::abs(a-b)};
+        if(abs_diff<=eps)
+        {
+            return true;
+        }
+        return false;
     }
 }
