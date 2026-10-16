@@ -5,6 +5,8 @@ project(tiny-infer-cpp)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+enable_testing()
+
 # 1. Create the reusable Tiny Infer library
 add_library(tinyinfer_core
     src/memory.cpp
@@ -52,4 +54,9 @@ add_executable(tinyinfer_tests
 target_link_libraries(tinyinfer_tests PRIVATE
     tinyinfer_core
     Catch2::Catch2WithMain
+)
+
+add_test(
+    NAME tinyinfer_unit_tests
+    COMMAND tinyinfer_tests
 )

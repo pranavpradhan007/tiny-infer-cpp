@@ -27,4 +27,30 @@ Release builds generally enable compiler optimizations to improve execution perf
 
 
 
-# Day 30 - 
+# Day 30 - CTest Integration
+
+## What is CTest, and why are we using it in Tiny Infer?
+
+CTest gives us one standard command to run tests. we can use this same command in GitHub Actions so that code changes are automatically tested before merging
+
+## What is the difference between Catch2 and CTest?
+
+Catch2 verifies whether Tensor and MatVec behave correctly. CTest gives us one standard command to run those tests.
+
+## What is the purpose of enable_testing() and add_test() in CMake?
+
+CMake only generates tests if the enable_testing() command has been invoked. add_test() adds a test called name ane command
+
+## What happens when we execute the following command: ctest --test-dir build -C Debug --output-on-failure?
+
+runs your project's automated test suite using CMake's test runner (CTest) with specific configuration and logging behaviors
+
+## Why might CTest show 1/1 tests passed even though we wrote five Catch2 test cases?
+
+it does not know there are individual tests instead it only knows it is oinly 1 test
+
+
+
+
+
+# Day 31 - 
