@@ -25,6 +25,7 @@ target_include_directories(tinyinfer_core PUBLIC
 # 3. Create the CLI executable
 add_executable(tinyinfer
     src/main.cpp
+    benchmarks/matvec_bench.cpp
 )
 
 # 4. Link the CLI to our reusable library

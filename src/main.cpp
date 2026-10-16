@@ -1,6 +1,6 @@
 #include "tinyinfer/tensor.hpp"
-// #include "tinyinfer/tensor_io.hpp"
 #include "tinyinfer/matvec.hpp"
+#include "tinyinfer/benchmark.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -10,8 +10,7 @@ int main(int argc , char* argv[])
 {
     long long rows{};   
     long long cols{};
-    float min{-1.0f};
-    float max{1.0f};
+    
     bool rows_found{false};
     bool cols_found{false};
     try
@@ -81,21 +80,9 @@ int main(int argc , char* argv[])
             throw std::invalid_argument("Matrix dimensions must not exceed 4096");
         }
 
-        std::vector<float> rvector{tinyinfer::random_vector(cols, min, max)};
-        std::cout<<"Random vector: "<<'\n';
-        std::cout << "Generated random vector: "<< rvector.size() << '\n';
-        
+        double time{tinyinfer::time_matvec_ms(rows,cols)};
 
-        
-        std::cout<<"Random tensor: "<<'\n';
-        tinyinfer::Tensor rmatrix{tinyinfer::random_tensor(rows,cols,min,max)};
-        std::cout << "Generated random matrix: "<< rmatrix.rows() << " x "<< rmatrix.cols() << '\n';
-        
-        std::cout<<'\n'<<"MatVec multipication: "<<'\n';
-        std::vector<float> mresult{tinyinfer::matvec_naive(rmatrix, rvector)};
-        std::cout << "Output size: "<< mresult.size() << '\n';
-
-        std::cout << "First output value: "<< mresult.at(0) << '\n';
+        std::cout<<"\nElaspsed time: "<<time<<" ms\n";
         
         return 0;
 
