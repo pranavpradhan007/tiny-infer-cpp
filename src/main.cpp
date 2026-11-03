@@ -82,7 +82,7 @@ int main(int argc , char* argv[])
 
         double time{tinyinfer::time_matvec_ms(rows,cols)};
 
-        std::cout<<"\nElaspsed time: "<<time<<" ms\n";
+        std::cout<<"\nElapsed time: "<<time<<" ms\n";
         
         return 0;
 

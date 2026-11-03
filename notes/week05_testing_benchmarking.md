@@ -85,4 +85,62 @@ However, actual execution time does not necessarily increase by exactly four tim
 
 
 
-# Day 32 - 
+# Day 32 - Python Benchmark Runner: Automating C++ Performance Measurements
+
+## What is subprocess.run(), and why are we using it in Tiny Infer?
+
+subprocess.run() is a Python function that executes an external program and waits for it to finish. We use it to execute our compiled C++ Tiny Infer executable automatically for different matrix sizes.
+
+capture_output=True captures the program's standard output and error output. text=True converts the captured output into strings, and check=True raises a CalledProcessError if the program exits with a nonzero status.
+
+## What is pathlib.Path, and why do we use __file__, .resolve(), and .parent.parent?
+
+pathlib.Path provides an object-oriented way to work with files and directories.
+
+__file__ refers to the current Python script, .resolve() obtains its absolute path, and .parent.parent navigates two directory levels upward.
+
+We use these operations to locate our project root and construct the path to tinyinfer.exe without hardcoding a machine-specific absolute path.
+
+## How does our Python script extract the MatVec execution time from the C++ program's output?
+
+Our Python script captures the C++ program's output using subprocess.run().
+
+We use .splitlines() to separate the output into individual lines and .strip() to remove unnecessary whitespace.
+
+Then .startswith("Elapsed time:") identifies the timing line, .split() separates it into words, and float() converts the extracted timing string into a numerical value.
+
+This allows us to store the execution time for each matrix size.
+
+## Why do we use csv.writer(), writerow(), and writerows()?
+
+csv.writer() creates an object that can write structured data into a CSV file.
+
+writerow() writes one row, such as the column headers, while writerows() writes multiple rows from a collection of records.
+
+We collect all measurements before writing the CSV so that a failed benchmark does not produce a partially updated results file.
+
+Opening the file with "w" replaces existing contents, while newline="" prevents unwanted extra blank lines when writing CSV files, particularly on Windows.
+
+## Why is error handling important in automated benchmarking?
+
+Error handling helps us detect failures and prevents incorrect measurements from being recorded as valid benchmark results.
+
+We use FileNotFoundError if the executable is missing, CalledProcessError when the C++ program exits unsuccessfully, and ValueError when the timing output is missing or invalid.
+
+We also reject negative and non-finite timing values because they cannot represent valid elapsed-time measurements.
+
+Raising exceptions instead of silently continuing ensures we do not produce misleading benchmark results.
+
+## Why is one benchmark run insufficient?
+
+A single benchmark run is insufficient because execution time can vary due to operating-system scheduling, CPU frequency changes, caching, background processes, and other sources of measurement noise.
+
+To make reliable performance comparisons, we should execute each configuration multiple times, include warmup runs when appropriate, and calculate statistics such as the median and variability.
+
+This helps us distinguish genuine optimization improvements from random measurement fluctuations.
+
+
+
+
+
+# Day 33 - 
