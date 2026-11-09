@@ -157,4 +157,32 @@ increasing size twice squares the time required for computational work
 
 
 
-# Day 34 - 
+# Day 34 - Benchmarking Fundamentals: Reliable Performance Measurements
+
+## Why is one benchmark run not enough?
+
+One benchmark run is not enough because performance is never 100% constant. Relying on a single test introduces massive noise and can lead to false conclusions
+
+## How does CPU frequency affect benchmarking?
+
+CPU frequency directly dictates how many instruction cycles a processor can execute per second, making it one of the most volatile variables in benchmarking. If CPU frequency fluctuates between tests, your benchmark results will measure the chip's changing thermal state rather than your software's true performance.
+
+## How do background applications affect benchmarking?
+
+When a background task like an antivirus scan triggers during a Matrix-Vector (MatVec) multiplication benchmark, it directly competes for the exact same hardware bottlenecks that govern your program's speed. Because MatVec is a classic memory-bound operation, the interference is exceptionally severe.
+
+## Why is Debug usually slower than Release?
+
+Debug builds are slower than Release builds because Debug mode disables compiler optimizations and injects diagnostic code to preserve a 1:1 match between your source code and the machine instructions. This keeps execution predictable so you can set breakpoints, step through code line-by-line, and inspect variables accurately.
+In contrast, a Release build gives the compiler permission to aggressively rewrite, reorder, and even delete parts of your code to maximize hardware efficiency.
+
+## What is the difference between Debug and Release builds?
+
+The fundamental difference is that Debug builds are designed for human programmers to troubleshoot code, while Release builds are optimized for the computer to run code as fast as possible.
+Because they serve entirely opposite goals, the compiler processes your source code in completely different ways for each configuration.
+
+
+
+
+
+# Day 35 - Week 5 Review
