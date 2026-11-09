@@ -186,3 +186,15 @@ Because they serve entirely opposite goals, the compiler processes your source c
 
 
 # Day 35 - Week 5 Review
+
+## What did I accomplish in Week 5?
+
+During Week 5, I introduced automated testing and performance benchmarking into Tiny Infer. I integrated Catch2 and CTest, implemented five unit test cases for Tensor and MatVec functionality, and developed a benchmark using std::chrono::steady_clock. I also created a Python script to execute benchmarks automatically, collect execution times, and store the results in a CSV file. Finally, I used Matplotlib to visualize how MatVec execution time changes with matrix size.
+
+## Why are automated tests important?
+
+Automated tests help verify that the numerical operations produce correct results. As I introduce future optimizations, such as SIMD, quantization, and GPU kernels, the tests will help detect changes that accidentally break existing functionality.Catch2 provides the test cases and assertions, while CTest provides a standard way to execute the test suite.
+
+## What did I learn about benchmarking?
+
+Benchmarking measures how an implementation performs, but obtaining reliable results requires more than recording a single execution time. I learned that CPU frequency, operating-system scheduling, cache behavior, background applications, and compiler optimizations can affect measurements. Using Release builds, repeating benchmarks, and examining measurement variability are important practices for meaningful performance comparisons.
