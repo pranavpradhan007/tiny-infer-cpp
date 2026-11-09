@@ -143,4 +143,18 @@ This helps us distinguish genuine optimization improvements from random measurem
 
 
 
-# Day 33 - 
+# Day 33 - Benchmark Visualization with Matplotlib
+
+## Why do we use exist_ok=True when creating the charts directory? What happens if we run the script again without it?
+
+exist_ok=True tells Path.mkdir() not to raise an error if the directory already exists. This allows our visualization script to run repeatedly without failing when the charts directory is already present. Without it, attempting to create an existing directory would raise a FileExistsError.
+
+## Naive matrix-vector multiplication has a time complexity of \(O(N^2)\). If we increase the matrix dimensions from 256 × 256 to 512 × 512, why would we expect approximately four times as much computational work?
+
+increasing size twice squares the time required for computational work
+
+
+
+
+
+# Day 34 - 
