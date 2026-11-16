@@ -1,6 +1,7 @@
 #include "tinyinfer/tensor.hpp"
 #include "tinyinfer/matvec.hpp"
 #include "tinyinfer/benchmark.hpp"
+#include "tinyinfer/quantized_tensor.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <vector>

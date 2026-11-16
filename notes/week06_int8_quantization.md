@@ -71,4 +71,34 @@ Therefore, quantization can substantially reduce memory consumption without nece
 
 
 
-# Day 37 - 
+# Day 37 - Implementing the QuantizedTensor Class
+
+## Q1. What is the purpose of the QuantizedTensor class?
+
+QuantizedTensor is a class designed to store quantized tensor data using signed 8-bit integers. It maintains the tensor's shape, scale, and underlying data. Unlike the original FP32 Tensor, it uses less memory per element and requires a quantization scale to interpret the stored integers.
+
+## Why do we use std::vector<std::int8_t> to store quantized data?
+
+We use std::vector<std::int8_t> because it provides contiguous, dynamically sized INT8 storage and manages memory automatically through RAII. This reduces the risk of memory leaks and makes tensor storage safer and easier to manage.
+
+## Why does QuantizedTensor need to store a scale_ value?
+
+The scale represents how much of the original floating-point range corresponds to one quantized integer step. It is needed for both quantization and dequantization. Without the scale, we cannot determine the approximate original floating-point values from the stored INT8 values.
+
+## Why are rows(), cols(), and scale() declared as const member functions?
+
+We declare rows(), cols(), and scale() as const member functions because they should only return stored information without modifying the object's state. This improves const-correctness and allows the functions to be called on constant objects.
+
+## Why must the constructor validate its inputs?
+
+Constructor validation ensures that every successfully constructed QuantizedTensor starts in a valid state. By rejecting invalid dimensions and scales immediately, we prevent incorrect objects from being used later and avoid requiring every caller to repeat the same validation.
+
+## Why did we use std::size_t and check data_.max_size() / c before allocating memory?
+
+We use std::size_t because it is the standard unsigned type for representing sizes in C++. We check data_.max_size() / c before multiplication to ensure that the requested number of elements is within the vector's supported limit and that calculating the element count is safe.
+
+
+
+
+
+# Day 38 - 
