@@ -1,6 +1,8 @@
 #include "tinyinfer/quantized_tensor.hpp"
+#include "tinyinfer/tensor.hpp"
 #include <stdexcept>
 #include <cmath>
+
 
 namespace tinyinfer
 {
@@ -34,4 +36,15 @@ namespace tinyinfer
         
         data_.resize(r * c);
     }
+
+    const std::vector<std::int8_t>& tinyinfer::QuantizedTensor::raw_data() const
+    {
+        return data_;
+    }
+    
+    std::vector<std::int8_t>& tinyinfer::QuantizedTensor::raw_data() 
+    {
+        return data_;
+    }
+
 }

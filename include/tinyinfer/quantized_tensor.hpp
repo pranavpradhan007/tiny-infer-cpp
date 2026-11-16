@@ -19,5 +19,7 @@ namespace tinyinfer
         int cols() const {return cols_;}
         float scale() const {return scale_;}
 
+        std::vector<std::int8_t>& raw_data();
+        const std::vector<std::int8_t>& raw_data() const;
     };
 }

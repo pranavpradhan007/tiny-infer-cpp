@@ -16,6 +16,7 @@ add_library(tinyinfer_core
     src/tensor_io.cpp
     src/matvec.cpp
     src/quantized_tensor.cpp
+    src/quantization.cpp
 )
 
 # 2. Make headers accessible to the library and its users
@@ -51,6 +52,7 @@ add_executable(tinyinfer_tests
     tests/test_tensor.cpp
     tests/test_matvec.cpp
     tests/test_quantized_tensor.cpp
+    tests/test_quantization.cpp
 )
 
 # 7. Link the tests to Tiny Infer and Catch2

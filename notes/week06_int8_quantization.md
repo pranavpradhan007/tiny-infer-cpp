@@ -101,4 +101,26 @@ We use std::size_t because it is the standard unsigned type for representing siz
 
 
 
-# Day 38 - 
+# Day 38 - Implementing INT8 Quantization in C++
+
+## Explain the complete flow of quantize_int8().
+
+`quantize_int8()` rejects invalid dimensions and non-finite values, sets the scale to the largest absolute value divided by 127 (or 1 if the tensor is all zeros), and stores each float as `round(value / scale)` clamped to `[-127, 127]`. It returns a `QuantizedTensor` with the same shape, that scale, and those INT8 values.
+
+## Why do we use the maximum absolute value when calculating the quantization scale?
+
+to map the entire continuous data range into the fixed bounds of a lower-precision integer format without clipping or information loss
+
+## Why are rounding, clamping, and special-case handling necessary?
+
+Rounding is necessary because `value / scale` is a float, and INT8 storage needs the nearest integer. Clamping keeps that integer inside `[-127, 127]`, and the special cases avoid a scale of `0` when the tensor is all zeros or the computed scale underflows.
+
+## How does INT8 quantization contribute to AI inference optimization?
+
+INT8 quantization stores each value in 1 byte instead of 4, so weights and activations use about one quarter of the memory and move less data during inference. That can make inference faster and cheaper on hardware with INT8 support, though the speedup is not automatically 4× because of dequantization overhead and operations that stay in higher precision.
+
+
+
+
+
+# Day 39 - 
