@@ -123,4 +123,27 @@ INT8 quantization stores each value in 1 byte instead of 4, so weights and activ
 
 
 
-# Day 39 - 
+# Day 39 - Implementing INT8 Dequantization in C++
+
+## Is dequantization mathematically reversible?
+
+dequantization is generally not mathematically reversible as quantization is a lossy operation.
+
+## Is the maximum dequantization error always half the quantization scale?
+
+No  the maximum dequantization error is not always bounded by \(\frac{s}{2}\). That bound only holds strictly inside the representable dynamic range of a uniform quantizer using pure round-to-nearest rounding.
+In practice, hardware constraints, clipping, and asymmetric formats frequently cause the error to exceed \(\frac{s}{2}\).
+
+## Can we directly compare or add INT8 values from tensors with different quantization scales?
+
+No, you cannot directly compare or add INT8 values from tensors that have different quantization scales. Because each stored integer is merely a compressed representation multiplied by its own scaling factor, operating on the raw integers ignores their true real-world magnitudes.
+
+## Do we always need to dequantize before performing matrix multiplication?
+
+No, you do not need to dequantize matrices before performing matrix multiplication. You can compute the matrix product directly in integer arithmetic and apply a single floating-point scaling step afterward.
+
+
+
+
+
+# Day 40 - 

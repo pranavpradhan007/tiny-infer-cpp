@@ -24,5 +24,24 @@ TEST_CASE("INT8 quantization converts FP32 values correctly", "[tensor][shape]")
    REQUIRE(qtensor.raw_data()[3]==127);
 }
 
+TEST_CASE("FP32 dequantization converts INT8 values correctly", "[quantization][dequantization]")
+{
+   tinyinfer::Tensor tensor(2,2);
+   tensor.at(0,0)=-4.0f;
+   tensor.at(0,1)=-1.0f;
+   tensor.at(1,0)=0.0f;
+   tensor.at(1,1)=4.0f;
+   tinyinfer::QuantizedTensor qtensor(tinyinfer::quantize_int8(tensor));
+   tinyinfer::Tensor rtensor(tinyinfer::dequantize_int8(qtensor));
+
+   REQUIRE(rtensor.rows() == tensor.rows());
+   REQUIRE(rtensor.cols() == tensor.cols());
+   float tolerance = qtensor.scale() / 2.0f + 1e-6f;
+   for(std::size_t i{0}; i<tensor.raw_data().size(); i++)
+   {  
+      REQUIRE(rtensor.raw_data()[i]==Catch::Approx(tensor.raw_data()[i]).margin(tolerance));
+   }
+}
+
 
 

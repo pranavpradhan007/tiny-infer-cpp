@@ -54,6 +54,18 @@ namespace tinyinfer
         return qtensor;
     }
 
-
+    tinyinfer::Tensor dequantize_int8(const tinyinfer::QuantizedTensor& qtensor)
+    {
     
+        tinyinfer::Tensor tensor(qtensor.rows(), qtensor.cols());
+        std::size_t i{0};
+        for(const auto& data : qtensor.raw_data())
+        {
+            float x_r{data*qtensor.scale()};
+            tensor.raw_data()[i] = x_r; 
+            ++i;
+        }
+
+        return tensor;
+    }    
 }
