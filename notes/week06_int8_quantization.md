@@ -146,4 +146,26 @@ No, you do not need to dequantize matrices before performing matrix multiplicati
 
 
 
-# Day 40 - 
+# Day 40 - Quantization Error Metrics
+
+## Can two quantization methods have the same MAE but different maximum errors?
+
+Yes, two quantization methods can easily have the same Mean Absolute Error (MAE) while having completely different maximum errors. Because MAE averages the absolute errors across all values in a tensor or dataset, one large outlier error can be masked if the remaining values have very small errors.
+
+## Why can a model have low quantization error but still lose significant prediction accuracy?
+
+A model can have very low quantization error (small numerical distance between original and quantized weights) yet suffer a severe drop in task prediction accuracy due to how neural networks process information non-linearly and accumulate errors.
+
+## Are MAE and maximum absolute error sufficient to evaluate a quantized AI model?
+
+No, Mean Absolute Error (MAE) and Maximum Absolute Error are not sufficient on their own to evaluate a quantized AI model. While they are useful for verifying low-level numerical accuracy during kernel development, they miss critical downstream impacts on model behavior and compound errors across layers.
+
+## Why is a 4× theoretical compression ratio different from the actual memory savings of an inference system?
+
+A 4× theoretical compression ratio (such as moving from 16-bit to 4-bit weights) rarely translates to a 4× reduction in total system memory for an AI inference engine due to several fixed architectural overheads and runtime allocations.
+
+
+
+
+
+# Day 41 - 
