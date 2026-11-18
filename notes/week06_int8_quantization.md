@@ -168,4 +168,27 @@ A 4× theoretical compression ratio (such as moving from 16-bit to 4-bit weights
 
 
 
-# Day 41 - 
+# Day 41 - Quantization CLI
+
+## Why should the CLI be separate from the numerical computation library?
+
+Separating the Command-Line Interface (CLI) from the numerical computation library ensures reusability, easier testing, and clean maintainability. This software design principle, known as separation of concerns, keeps user interaction logic decoupled from core math operations.
+
+## Why is reproducibility important when benchmarking AI optimization techniques?
+
+Reproducibility is essential when benchmarking AI optimization techniques because it ensures that measured speedups or efficiency gains come from your actual code changes rather than random noise or environmental shifts. Without a consistent baseline, you cannot verify whether an optimization truly improves performance or if a regression has been introduced.
+
+## Why is input validation especially important in a command-line tool that allocates memory?
+
+Input validation is critical in a command-line tool that allocates memory because untrusted arguments can directly trigger crashes, resource exhaustion, or severe security vulnerabilities. When a program blindly uses user-provided numbers or strings to request memory from the operating system, a simple typo or malicious input can break the application.
+
+## What makes a CLI experiment scientifically meaningful?
+
+A command-line interface (CLI) experiment is scientifically meaningful when it produces reproducible, verifiable, and unbiased evidence that isolates how specific inputs or configurations affect system behavior.
+Rather than simply running a script and observing a single output, a rigorous CLI experiment controls the execution environment so other researchers can independently verify the results and draw valid conclusions.
+
+
+
+
+
+# Day 42 - 
