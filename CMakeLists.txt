@@ -36,6 +36,10 @@ target_link_libraries(tinyinfer PRIVATE
     tinyinfer_core
 )
 
+add_executable(tinyinfer_binary_demo
+    src/binary_file_demo.cpp
+)
+
 # 5. Download and configure Catch2
 include(FetchContent)
 
