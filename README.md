@@ -2,11 +2,11 @@
 
 A from-scratch C++17 learning project exploring the building blocks of AI inference: tensor storage, numerical operations, data serialization, correctness checks, and command-line tooling. The longer-term goal is to understand, benchmark, and optimize the systems behind AI workloads.
 
-> **Status:** Weeks 1–5 completed (Days 1–35). Tiny Infer is currently a CPU-based C++ learning project featuring tensor operations, automated correctness tests, and basic performance benchmarking. It is not yet a production inference engine.
+> **Status:** Weeks 1–6 completed (Days 1–42). Tiny Infer is a CPU-based C++17 learning project featuring contiguous tensor storage, naive matrix-vector multiplication, automated correctness tests, performance benchmarking, and symmetric INT8 quantization with numerical error evaluation. It is not yet a production inference engine.
 
 ## Project Goal
 
-Learn modern C++by building a small inference-oriented system incrementally, rather than completing unrelated exercises. Each step connects C++ fundamentals to real concerns in numerical computing, including memory layout, validation, performance, and reproducibility.
+Learn modern C++ by building a small inference-oriented system incrementally, rather than completing unrelated exercises. Each step connects C++ fundamentals to real concerns in numerical computing, including memory layout, validation, performance, and reproducibility.
 
 **Implemented so far**
 
@@ -15,13 +15,16 @@ Learn modern C++by building a small inference-oriented system incrementally, rat
 - Mutable and read-only element access, bounds checking, filling, random initialization, and text serialization.
 - Naive matrix-vector multiplication (`matvec_naive`) with a row dot-product helper (`dot_product_row`).
 - Approximate floating-point comparison (`almost_equal`) and manually checked MatVec cases.
-- A `matvec` command-line interface with dimension parsing and validation.
-- Five Catch2 unit test cases for Tensor and MatVec operations, integrated with CTest.
+- A CLI supporting `matvec` and `quantize`, with command and dimension validation.
+- Catch2 unit tests for Tensor, MatVec, QuantizedTensor, INT8 quantization, dequantization, and error metrics, integrated with CTest.
+- A `QuantizedTensor` class using contiguous `std::vector<std::int8_t>` storage and scale metadata.
+- Symmetric per-tensor INT8 quantization and FP32 dequantization.
+- Quantization evaluation using mean absolute error (MAE), maximum absolute error, and theoretical raw-storage compression ratio.
 - C++ MatVec benchmarking using `std::chrono::steady_clock`.
 - Python benchmark automation with CSV output.
 - Performance visualization using Matplotlib.
 
-**Planned later:** INT8 quantization, model formats such as GGUF, more performance optimizations, and optional Python bindings. These are roadmap items, **not current features**.
+**Planned later:** Binary model-file parsing, GGUF metadata inspection, optimized numerical kernels, additional quantization techniques, more advanced performance benchmarking, and optional Python bindings.
 
 ## Quick Start
 
@@ -55,37 +58,42 @@ The `build/` directory contains generated build files and compiled artifacts; it
 
 ```text
 tinyinfer matvec --rows <R> --cols <C>
+tinyinfer quantize --rows <R> --cols <C>
 ```
 
-- `--rows`: positive number of matrix rows (R).
-- `--cols`: positive number of matrix columns (C).
-- Both flags are required, with no duplicates. Invalid flags, non-integer values, and non-positive dimensions are rejected.
-- The current learning CLI limits each dimension to **4096** to avoid unreasonable allocations.
-- A random `R × C` matrix and a random vector of length `C` are generated using values between `-1.0` and `1.0`.
-- The result contains `R` elements. Random output values vary between runs.
+- `--rows`: positive number of rows (R).
+- `--cols`: positive number of columns (C).
+- Both flags are required. Invalid flags, duplicate flags, non-integer values, and non-positive dimensions are rejected.
+- Each dimension is limited to **4096** in the current learning CLI.
 
-Example:
+The CLI supports two commands:
+
+- `matvec`: Generates a random `R × C` FP32 matrix and a random vector of length `C`, then benchmarks naive matrix-vector multiplication. Its output vector contains `R` elements.
+- `quantize`: Generates a random `R × C` FP32 tensor, converts it to INT8, reconstructs an approximate FP32 tensor, and reports memory and numerical error metrics.
+
+Random input values are generated in the range `[-1.0, 1.0]`, so output values and quantization errors vary between runs.
+
+### MatVec Example
 
 ```powershell
 .\build\Debug\tinyinfer.exe matvec --rows 2 --cols 3
 ```
 
-The current program prints a few informational labels as well as the summary. The output has this structure:
+Output format:
 
 ```text
-Generated random vector: 3
-Generated random matrix: 2 x 3
-
-MatVec multipication:
-Output size: 2
-First output value: <random value>
-
 Elapsed time: <measured time> ms
 ```
 
-`MatVec multipication` is the current console label; it can be renamed in a later cleanup. The `<random value>` placeholder is not literal program output.
+### Quantization Example
 
-Invalid example:
+```powershell
+.\build\Release\tinyinfer.exe quantize --rows 1024 --cols 1024
+```
+
+See [INT8 Quantization](#int8-quantization) for recorded output and results.
+
+### Invalid Input Example
 
 ```powershell
 .\build\Debug\tinyinfer.exe matvec --rows -2 --cols 3
@@ -110,7 +118,10 @@ tiny-infer-cpp/
 │       ├── tensor.hpp
 │       ├── tensor_io.hpp
 │       ├── matvec.hpp
-│       └── benchmark.hpp
+│       ├── benchmark.hpp
+│       ├── quantized_tensor.hpp
+│       ├── quantization.hpp
+│       └── quantization_metrics.hpp
 ├── src/
 │   ├── main.cpp
 │   ├── memory.cpp
@@ -118,10 +129,16 @@ tiny-infer-cpp/
 │   ├── vector_utils.cpp
 │   ├── tensor.cpp
 │   ├── tensor_io.cpp
-│   └── matvec.cpp
+│   ├── matvec.cpp
+│   ├── quantized_tensor.cpp
+│   ├── quantization.cpp
+│   └── quantization_metrics.cpp
 ├── tests/
 │   ├── test_tensor.cpp
-│   └── test_matvec.cpp
+│   ├── test_matvec.cpp
+│   ├── test_quantized_tensor.cpp
+│   ├── test_quantization.cpp
+│   └── test_quantization_metrics.cpp
 ├── benchmarks/
 │   ├── matvec_bench.cpp
 │   ├── run_matvec_bench.py
@@ -134,13 +151,15 @@ tiny-infer-cpp/
 │   ├── week01_cpp_basics.md
 │   ├── week02_cmake_project_structure.md
 │   ├── week03_tensor_class.md
-│   └── week04_matrix_vector_multiplication.md
+│   ├── week04_matrix_vector_multiplication.md
+│   ├── week05_testing_benchmarking.md
+│   └── week06_int8_quantization.md
 └── data/
     ├── vector.txt
     └── tensor.txt
 ```
 
-**Directory purpose:** `include/tinyinfer/` contains public declarations; `src/` contains implementations and the CLI; `notes/` contains learning logs; `data/` holds sample text files for file I/O and serialization practice.
+**Directory purpose:** `include/tinyinfer/` contains public declarations; `src/` contains implementations and the CLI; `tests/` contains unit tests; `notes/` contains learning logs; `data/` holds sample text files for file I/O and serialization practice.
 
 ## Tensor Representation
 
@@ -189,7 +208,77 @@ abs(a - b) <= eps
 
 This is useful because mathematically equivalent numerical implementations may differ slightly due to floating-point rounding. Absolute tolerance is a first step; later work can add relative tolerance for differently scaled values.
 
-**Testing status:** Tiny Infer includes five automated Catch2 unit test cases covering Tensor and MatVec functionality. These tests are integrated with CTest and can be executed through the `tinyinfer_tests` target.
+**Testing status:** Tiny Infer has automated Catch2 tests for Tensor, MatVec, and INT8 quantization functionality. Run them through the `tinyinfer_tests` target or via CTest.
+
+## INT8 Quantization
+
+Tiny Infer implements symmetric per-tensor INT8 quantization to explore the trade-off between numerical precision and raw tensor storage.
+
+### Quantized Tensor Representation
+
+`tinyinfer::Tensor` stores FP32 values in `std::vector<float>` (typically 4 bytes per element). `tinyinfer::QuantizedTensor` stores signed INT8 values in `std::vector<std::int8_t>` (1 byte per element), along with the tensor dimensions and a scale.
+
+This gives a theoretical **4× reduction in raw element storage**, excluding scale metadata, other allocations, and runtime overhead.
+
+### Quantization and Dequantization
+
+For symmetric per-tensor quantization, Tiny Infer calculates one scale from the maximum absolute input value:
+
+```text
+scale = max(abs(x)) / 127
+q = clamp(round(x / scale), -127, 127)
+recovered = q * scale
+```
+
+The implementation handles all-zero tensors separately to avoid a zero scale. The reconstructed FP32 values may differ from the originals because rounding loses precision.
+
+### Quantization Error Metrics
+
+- **Mean absolute error (MAE):** Average absolute difference between the original and recovered FP32 values.
+- **Maximum absolute error:** Largest absolute difference between any pair of original and recovered values.
+- **Compression ratio:** Theoretical ratio of FP32 to INT8 raw element-storage requirements.
+
+These metrics describe reconstruction error and raw storage; they do **not** establish downstream model accuracy or inference speedup.
+
+### Run the Quantization CLI
+
+```powershell
+.\build\Release\tinyinfer.exe quantize --rows 1024 --cols 1024
+```
+
+Recorded example output:
+
+```text
+Dimensions of the original tensor: 1024 X 1024
+Dimensions of the recovered tensor: 1024 X 1024
+FP32 memory: 4.1943 MB
+INT8 memory: 1.04858 MB
+Quantization scale: 0.00787399
+Mean Absolute Error: 0.00196622
+Maximum Absolute Error: 0.00393701
+Compression Ratio: 4 x
+```
+
+### Recorded Quantization Results
+
+The following results come from single CLI runs with randomly generated FP32 tensors in the range `[-1.0, 1.0]`.
+
+| Tensor dimensions | FP32 memory (MB) | INT8 memory (MB) | Compression | Scale | MAE | Max error |
+|---|---:|---:|---:|---:|---:|---:|
+| 128 × 128 | 0.065536 | 0.016384 | 4× | 0.00787337 | 0.00196153 | 0.00393611 |
+| 256 × 256 | 0.262144 | 0.065536 | 4× | 0.00787384 | 0.00196636 | 0.00393689 |
+| 1024 × 1024 | 4.1943 | 1.04858 | 4× | 0.00787399 | 0.00196622 | 0.00393701 |
+
+Raw element storage decreases by a factor of four at each tested size. The MAE remains near `0.00196`, and the maximum error near `0.00394`, for these inputs.
+
+### Limitations
+
+- Each result is a single run on randomly generated data; no fixed random seed is exposed by the CLI.
+- These are raw element-storage estimates, not measurements of peak process memory usage.
+- Scale metadata and temporary buffers are excluded from the theoretical compression ratio.
+- Quantization and inference latency are not measured by this command.
+- Reconstruction error is not a substitute for downstream task-accuracy evaluation.
+- More advanced schemes, such as per-channel quantization, are not yet implemented.
 
 ## Automated Testing — Catch2 and CTest
 
@@ -199,15 +288,16 @@ Catch2 is integrated into the CMake project using `FetchContent`.
 
 ### Current Test Coverage
 
-Five unit test cases are implemented:
+Catch2 tests exercise the following components:
 
-| Test | Description |
+| Component | Coverage |
 |---|---|
-| Tensor Shape | Verifies tensor dimensions and element count |
-| Tensor Indexing | Verifies correct element access and assignment |
-| Tensor Bounds | Checks that out-of-range indexing throws an exception |
-| MatVec Correctness | Validates multiplication against known results |
-| Dimension Mismatch | Checks that incompatible dimensions throw an exception |
+| Tensor | Shape, indexing, and bounds validation |
+| MatVec | Numerical correctness and dimension mismatch handling |
+| QuantizedTensor | Constructor, shape, scale, and invalid input validation |
+| INT8 quantization | Conversion, zero inputs, and invalid numerical inputs |
+| INT8 dequantization | Reconstructed FP32 values and round-trip comparison |
+| Quantization metrics | MAE, maximum absolute error, and theoretical compression ratio |
 
 ### Build the Project
 
@@ -234,7 +324,7 @@ Alternatively, run the Catch2 executable directly:
 .\build\Release\tinyinfer_tests.exe
 ```
 
-CTest registers one test named `tinyinfer_unit_tests`, which invokes the Catch2 test executable. Therefore, CTest may report one passing test while Catch2 executes five individual test cases.
+CTest registers one test named `tinyinfer_unit_tests`, which invokes the Catch2 test executable. Therefore, CTest may report one passing test even though Catch2 executes multiple individual test cases.
 
 These tests validate correctness. They do not measure performance.
 
@@ -262,7 +352,7 @@ Then execute:
 .\build\Release\tinyinfer.exe matvec --rows 512 --cols 512
 ```
 
-The CLI prints the generated dimensions, output information, and a timing line similar to:
+The CLI prints a timing line similar to:
 
 ```text
 Elapsed time: 0.3627 ms
@@ -707,10 +797,49 @@ Tensor
 - Added reproducible build and execution commands.
 - Included recorded benchmark measurements and visualization.
 
+## Week 6 Progress
+
+### Day 36 — INT8 Quantization Theory
+
+- Studied FP32 and INT8 representations, scale calculation, rounding, and numerical reconstruction error.
+- Explained the theoretical 4× raw-storage reduction and why speedups are not guaranteed.
+
+### Day 37 — QuantizedTensor Class
+
+- Implemented INT8 storage with shape and scale metadata.
+- Added constructor validation and unit tests.
+
+### Day 38 — INT8 Quantization
+
+- Implemented symmetric per-tensor `quantize_int8()` with rounding and clamping.
+- Covered zero tensors and invalid numerical inputs.
+
+### Day 39 — INT8 Dequantization
+
+- Implemented `dequantize_int8()` and checked numerical round trips.
+- Studied irreversible precision loss and quantization scales.
+
+### Day 40 — Quantization Metrics
+
+- Added MAE, maximum absolute error, and theoretical compression-ratio calculations.
+- Added tests for quantization metrics.
+
+### Day 41 — Quantization CLI
+
+- Extended the CLI with the `quantize` command.
+- Connected FP32 generation, INT8 quantization, dequantization, memory reporting, and error metrics.
+- Preserved the existing `matvec` command.
+
+### Day 42 — Week 6 Documentation and Cleanup
+
+- Documented the INT8 quantization pipeline and CLI.
+- Recorded results for 128 × 128, 256 × 256, and 1024 × 1024 tensors.
+- Updated project layout, test coverage, and roadmap status.
+
 ## Current Status and Next Steps
 
-**Completed:** Weeks 1–5 covering C++ fundamentals, project structure, Tensor implementation, naive MatVec, automated unit testing, and basic benchmarking.
+**Completed:** Weeks 1–6 covering C++ fundamentals, project structure, Tensor implementation, naive MatVec, automated testing, benchmarking, and symmetric INT8 quantization with numerical error evaluation.
 
-**Next:** Week 6 — INT8 Quantization.
+**Next:** Week 7 — Binary Parsing and GGUF, beginning with binary files, byte-oriented I/O, and GGUF metadata.
 
 **Long-term goal:** Build efficient AI inference systems and develop expertise in performance optimization across different AI workloads and hardware platforms.
