@@ -68,4 +68,30 @@ just because a header says there are a billion tensors does not mean the file ac
 
 
 
-# Day 46 - 
+# Day 46 - GGUF String Reader
+
+## Length-Prefixed Strings: Why does GGUF use length-prefixed strings instead of null-terminated strings? How does this approach allow the parser to handle variable-length strings and embedded null bytes?
+
+gguf uses length prefixed strings instead of c style null terminated strings so the parser knows the exact byte size upfront without scanning character by character for a zero byte. that makes variable length strings super fast and predictable to read, and it also lets strings safely hold embedded null bytes inside their text or templates without tricking the parser into cutting the string short too early.
+
+## Memory Safety and Length Validation: Suppose a corrupted GGUF file declares a string length of 10 billion bytes. What could happen if your parser immediately calls std::string::resize() using that value? Explain how your implementation protects against excessive allocations, integer overflow, and truncated data.
+
+if a corrupted file claims a string is 10 billion bytes long and your parser calls std::string::resize(10000000000) right away, it can trigger std::bad_alloc, crash the program with an out of memory kill, or thrash system memory. to stay safe, you should check that the requested length fits within remaining file bytes (and watch out for integer overflow when converting uint64_t to size_t or adding sizes together) before allocating, and even read in chunks or reject absurd lengths upfront so truncated or fuzzed files fail cleanly.
+
+## resize() vs. reserve():  What is the difference between std::string::resize() and std::string::reserve()? Why must we use resize() before calling std::ifstream::read() to write N bytes into the string's buffer?
+
+reserve() only preallocates extra capacity in the string buffer without changing its actual size(), while resize() actually expands the string's size() so its elements exist and str.data() / &str[0] points to a writable buffer of that length. if you only call reserve() and read bytes straight into the buffer, the string still thinks its length is zero, which breaks str.size(), string operations, and standard c++ buffer expectations.
+
+## Input Streams and File Position: Why does read_gguf_string() accept an existing std::ifstream& rather than a file path? Explain how the stream's current position allows a GGUF parser to read multiple metadata keys and values sequentially.
+
+passing an open std::ifstream& lets read_gguf_string() pick up right where the file cursor currently sits instead of reopening the file from the start or losing track of where you are. since gguf packs metadata keys, types, values, and tensor names one right after another, each call advances the stream offset to the exact next byte so the parser can smoothly step through every entry in sequence.
+
+## Binary Parsing Correctness: Your parser successfully reads an 8-byte length prefix indicating that the next string contains 20 bytes. However, only 12 bytes remain in the file. What happens when std::ifstream::read() attempts to read all 20 bytes? How should the function detect and handle this situation?
+
+when only 12 bytes remain in the file and std::ifstream::read() tries to read 20 bytes, it reads those 12 bytes, stops early, and sets both eofbit and failbit on the stream. your function should check !stream.good() or stream.gcount() != static_cast<std::streamsize>(len) right after the read, and if it didnt get all 20 bytes it should return a failure or error instead of pretending the truncated string is valid.
+
+
+
+
+
+# Day 47 - 

@@ -19,6 +19,7 @@ add_library(tinyinfer_core
     src/quantization.cpp
     src/quantization_metrics.cpp
     src/gguf_header.cpp
+    src/gguf_string.cpp
 )
 
 # 2. Make headers accessible to the library and its users
@@ -68,6 +69,7 @@ add_executable(tinyinfer_tests
     tests/test_quantized_tensor.cpp
     tests/test_quantization.cpp
     tests/test_quantization_metrics.cpp
+    tests/test_gguf_string.cpp
 )
 
 # 7. Link the tests to Tiny Infer and Catch2
