@@ -18,6 +18,7 @@ add_library(tinyinfer_core
     src/quantized_tensor.cpp
     src/quantization.cpp
     src/quantization_metrics.cpp
+    src/gguf_header.cpp
 )
 
 # 2. Make headers accessible to the library and its users
@@ -38,6 +39,14 @@ target_link_libraries(tinyinfer PRIVATE
 
 add_executable(tinyinfer_binary_demo
     src/binary_file_demo.cpp
+)
+
+add_executable(tinyinfer_gguf_inspect
+    src/gguf_inspect.cpp
+)
+
+target_link_libraries(tinyinfer_gguf_inspect PRIVATE
+    tinyinfer_core
 )
 
 # 5. Download and configure Catch2

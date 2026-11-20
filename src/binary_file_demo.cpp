@@ -63,15 +63,9 @@ void read_binary_header()
 
     inFile.read(readmagic, sizeof(readmagic));
 
-    inFile.read(
-        reinterpret_cast<char*>(&readversion),
-        sizeof(readversion)
-    );
+    inFile.read(reinterpret_cast<char*>(&readversion),sizeof(readversion));
 
-    inFile.read(
-        reinterpret_cast<char*>(&readcount),
-        sizeof(readcount)
-    );
+    inFile.read(reinterpret_cast<char*>(&readcount),sizeof(readcount));
 
     if (!inFile)
     {

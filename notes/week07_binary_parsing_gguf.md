@@ -46,4 +46,26 @@ The 16-byte TINY header from Day 43 and the 24-byte GGUF v3 header follow the sa
 
 
 
-# Day 45 - 
+# Day 45 - GGUF Header Parser
+
+## Struct versus separate variables: Why does parse_gguf_header() return a GgufHeader struct rather than return or separately expose four unrelated variables? Explain how this helps maintainability and future GGUF parsing.
+
+returning a GgufHeader struct groups the magic bytes, version, tensor count, and metadata count into one clean unit instead of passing around four loose variables that are easy to mix up or lose track of. it makes the code way easier to read and maintain because every function that needs header info just takes or returns one object, and if a newer gguf version ever adds another header field you can add it to the struct without breaking every function signature across your codebase.
+
+## Binary deserialization and padding: Why did we read each header field individually instead of reading all 24 bytes directly into a GgufHeader object using one read() call? Discuss C++ structure padding, alignment, and portability.
+
+reading each field one by one avoids nasty surprises from c++ struct padding and alignment, where the compiler can slip invisible extra bytes between fields to line them up on 4 or 8 byte boundaries. if you just dump 24 raw bytes straight into a struct with read(), a compiler with different padding rules or a big endian cpu could read the wrong bytes or misalign fields, whereas reading each piece explicitly and handling endianness keeps your parser portable across different compilers and hardware.
+
+## Magic and version validation:  Why must the GGUF parser validate the magic identifier and version? What could happen if it accepts an arbitrary binary file or attempts to interpret an unsupported GGUF version?
+
+checking the magic bytes and version right away stops your parser from treating a random file like an image, zip, or text doc as a gguf model and crashing or spitting out garbage. if it accepts an unknown magic number or an unsupported gguf version, the file layout might follow different rules or field sizes so trying to parse it anyway can cause out of bounds reads, weird corrupt values, or straight up segfaults.
+
+## Header counts versus file validity:  Suppose your parser successfully reads a GGUF header declaring 1 billion tensors. Does this prove that the file contains 1 billion valid tensor entries? Explain why header parsing alone is insufficient and what additional validation a complete GGUF parser would require.
+
+just because a header says there are a billion tensors does not mean the file actually has a billion valid tensor entries sitting in it, since a header only tells you what the file claims at the very top. a real gguf parser also has to check that the file is big enough to hold all those entries without overflowing sizes, actually parse each tensor name, dimensions, type, and offset cleanly without hitting unexpected end of file, and verify that tensor offsets stay inside the tensor data region and dont overlap or run past the end of the file.
+
+
+
+
+
+# Day 46 - 
